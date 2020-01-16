@@ -1,0 +1,2 @@
+[{ "id": 1,"text": "Helper file","type": "README","param":{"name":"https://github.com/rantav/go-archetype","type":"include","condition":"IncludeReadme","file":"README.md"}},
+ {"id": 2,"text": "main file","type": "main file" ,"param":{"name":"https://github.com/rantav/go-template/blob/master/transformations.yml","type":"include","condition":"IncludeReadme","file":"main.go"}}]
