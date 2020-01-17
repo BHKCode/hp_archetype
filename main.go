@@ -44,9 +44,9 @@ func main() {
 		getTemplateDownload(*checkoutTemplate,*checkoutDestination)
 	case "build":
 		buildCmd.Parse(os.Args[2:])
-		//fmt.Println("subcommand 'build'")
-		//fmt.Println("destination:", *buildDestination)
-		//fmt.Println(" tail:", buildCmd.Args())
+		fmt.Println("subcommand 'build'")
+		fmt.Println("destination:", *buildDestination)
+		fmt.Println(" tail:", buildCmd.Args())
 		runTemplate(*buildDestination)
     case "exit":
 		 os.Exit(1)
