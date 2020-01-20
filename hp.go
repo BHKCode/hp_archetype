@@ -44,7 +44,10 @@ func createJSONFile() {
 }
 
 func readJSONList() {
-	openJSONFile("test.json")
+	gopath := os.Getenv("GOPATH")
+        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+	openJSONFile(abspath)
+	//openJSONFile("test.json")
 	for _, value := range archetypes {
 		fmt.Println(value.Type)
 	}
@@ -53,7 +56,7 @@ func readJSONList() {
 
 func getHpTemplateInfo(template string) {
         gopath := os.Getenv("GOPATH")
-        abspath := path.Join(gopath, "src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
 	//openJSONFile("test.json")
 	//fmt.Println(archetypes)
@@ -72,7 +75,7 @@ func getHpTemplateInfo(template string) {
 
 func getTemplateDownload(template string, destination string) {
         gopath := os.Getenv("GOPATH")
-        abspath := path.Join(gopath, "src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
 	//openJSONFile("test.json")
 	//fmt.Println(archetypes)
