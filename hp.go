@@ -142,8 +142,8 @@ func checkError(err error) {
 	}
 }
 
-func openJSONFile(file string) {
-	jsonFile, err := os.Open("test.json")
+func openJSONFile(filename string) {
+	jsonFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Println(err)
 	}
