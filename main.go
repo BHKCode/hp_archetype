@@ -1,67 +1,58 @@
 package main
 
 import (
-	"bufio"
+	"flag"
 	"fmt"
-	"log"
 	"os"
-	"strings"
 )
 
 func main() {
 
-	fmt.Print("open")
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	suffix := "PS " + dir + ">"
-	scanner := bufio.NewScanner(os.Stdin)
-	//createJsonFile()
-	fmt.Print(suffix + " hp-archetypes --")
+	infoCmd := flag.NewFlagSet("info", flag.ExitOnError)
+	infoTemplate := infoCmd.String("template", "", "template")
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		s1 := strings.Split(line, "--")
-		s2 := s1[0:1]
-		//fmt.Print(s1[0:1])
-		err := os.Chdir(dir)
-		if err != nil {
-			fmt.Println("File Path Could not be changed")
-		}
-		switch strings.Join(s2, "") {
-		case "list":
-			readJSONList()
-			fmt.Print(suffix + " hp-archetypes --")
-		case "info":
-			getHpTemplateInfo(strings.Join(s1[1:], ""))
-			fmt.Print(suffix + " hp-archetypes --")
-		case "checkout":
-			getTemplateDownload(strings.Join(s1[1:2], ""), strings.Join(s1[2:3], ""))
-			fmt.Print(suffix + " hp-archetypes --")
-		case "build":
-			runTemplate(line, strings.Join(s1[1:], ""))
-			//fmt.Print(suffix + " hp-archetypes --")
-		case "exit":
-			os.Exit(1)
-		default:
-			fmt.Print(suffix + " hp-archetypes --")
+	checkoutCmd := flag.NewFlagSet("checkout", flag.ExitOnError)
+	checkoutTemplate := checkoutCmd.String("template", "", "template")
+	checkoutDestination := checkoutCmd.String("destination", "", "destination")
 
-		}
 
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	buildCmd := flag.NewFlagSet("build", flag.ExitOnError)
+	buildDestination := buildCmd.String("destination", "", "destination")
+
+	if len(os.Args) < 2 {
+		fmt.Println("expected 'foo' or 'bar' subcommands")
+		os.Exit(1)
 	}
 
-}
+	switch os.Args[1] {
 
-func stringToSlice(str string, splitter string) []string {
-	return strings.Split(str, splitter)
+	case "list":
+		readJSONList()
 
-}
-
-func sliceToString(slice []string, connector string) string {
-	return strings.Join(slice, connector)
+	case "info":
+		infoCmd.Parse(os.Args[2:])
+		//fmt.Println("subcommand 'info'")
+		//fmt.Println("template:", *infoTemplate)
+		//fmt.Println(" tail:", infoCmd.Args())
+		getHpTemplateInfo(*infoTemplate)
+	case "checkout":
+		checkoutCmd.Parse(os.Args[2:])
+		//fmt.Println("subcommand 'checkout'")
+		//fmt.Println("template:", *checkoutTemplate)
+		//fmt.Println("destination:", *checkoutDestination)
+		//fmt.Println(" tail:", checkoutCmd.Args())
+		getTemplateDownload(*checkoutTemplate,*checkoutDestination)
+	case "build":
+		buildCmd.Parse(os.Args[2:])
+		//fmt.Println("subcommand 'build'")
+		//fmt.Println("destination:", *buildDestination)
+		//fmt.Println(" tail:", buildCmd.Args())
+		runTemplate(*buildDestination)
+    case "exit":
+		 os.Exit(1)
+	default:
+		fmt.Println("expected 'list' or 'info' or 'checkout' or 'build' or 'exit' subcommands")
+		os.Exit(1)
+	}
 
 }
