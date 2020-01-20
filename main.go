@@ -20,7 +20,7 @@ func main() {
 	buildDestination := buildCmd.String("destination", "", "destination")
 
 	if len(os.Args) < 2 {
-		fmt.Println("expected 'foo' or 'bar' subcommands")
+		fmt.Println("expected 'list' or 'info' or 'checkout' or 'build' or 'exit' subcommands")
 		os.Exit(1)
 	}
 
