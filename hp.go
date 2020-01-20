@@ -53,9 +53,9 @@ func readJSONList() {
 func getHpTemplateInfo(template string) {
 	openJSONFile("test.json")
 	//fmt.Println(archetypes)
-	temp := strings.ReplaceAll(template, "template<", "")
+	//temp := strings.ReplaceAll(template, "template<", "")
 	for _, value := range archetypes {
-		if value.Type+">" == temp {
+		if value.Type == template {
 			fmt.Println("Text : ", value.Text)
 			fmt.Println("Type :", value.Type)
 			fmt.Println("param name:", value.Param.Name, " type: ", value.Param.Type, " condition:", value.Param.Condition, " file:", value.Param.File)
@@ -69,9 +69,9 @@ func getHpTemplateInfo(template string) {
 func getTemplateDownload(template string, destination string) {
 	openJSONFile("test.json")
 	//fmt.Println(archetypes)
-	temp := strings.ReplaceAll(template, "template<", "")
+	//emp := strings.ReplaceAll(template, "template<", "")
 	for _, value := range archetypes {
-		if value.Type+">" == temp {
+		if value.Type == template {
 			fmt.Println("Text : ", value.Text)
 			fmt.Println("Type :", value.Type)
 			fmt.Println("param name:", value.Param.Name, "- param Type :", value.Param.Type, "- param condition :",
@@ -83,9 +83,9 @@ func getTemplateDownload(template string, destination string) {
 	// Build fileName from fullPath
 	buildFileName()
 	// Create blank file
-	replacer := strings.NewReplacer("destination<", "", ">", "")
-	output := replacer.Replace(destination)
-	file := createFile(output)
+	//replacer := strings.NewReplacer("destination<", "", ">", "")
+	//output := replacer.Replace(destination)
+	file := createFile(destination)
 	// Put content on file
 	putFile(file, httpClient())
 
@@ -143,13 +143,12 @@ func openJSONFile(file string) {
 
 }
 
-func runTemplate(template string, destination string) {
-	replacer := strings.NewReplacer("destination<", "", ">", "")
+func runTemplate(destination string) {
+	//replacer := strings.NewReplacer("destination<", "", ">", "")
 
-	output := replacer.Replace(destination)
-	fmt.Println(output, " hh")
+	//output := replacer.Replace(destination)
 
-	s1 := strings.Split(output, string(filepath.Separator))
+	s1 := strings.Split(destination, string(filepath.Separator))
 	sz := len(s1)
 
 	if sz > 0 {
@@ -159,7 +158,7 @@ func runTemplate(template string, destination string) {
 	if err != nil {
 		fmt.Println("File Path Could not be changed")
 	}
-	exeCommnad(output)
+	exeCommnad(destination)
 
 }
 
