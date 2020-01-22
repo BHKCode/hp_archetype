@@ -9,9 +9,9 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"strings"
-	"path"
 )
 
 var (
@@ -23,21 +23,20 @@ var (
 
 type Archetype struct {
 	ID    int    `json:"id"`
-	Text  string `json:"text"`
-	Type  string `json:"type"`
+	Name  string `json:"name"`
+	Url   string `json:"url"`
 	Param struct {
-		Name      string `json:"name"`
-		Type      string `json:"type"`
-		Condition string `json:"condition"`
-		File      string `json:"file"`
+		Name        string `json:"name"`
+		RepoPath    string `json:"repo_path"`
+		IncludeGrpc string `json:"include_grpc"`
 	}
 }
 
 func createJSONFile() {
 	data := Archetype{
 		ID:   1,
-		Text: "helper file",
-		Type: "hp",
+		Name: "helper file",
+		Url:  "hp",
 	}
 	file, _ := json.MarshalIndent(data, "", " ")
 	_ = ioutil.WriteFile("test.json", file, 0644)
@@ -45,27 +44,27 @@ func createJSONFile() {
 
 func readJSONList() {
 	gopath := os.Getenv("GOPATH")
-        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
 	//openJSONFile("test.json")
 	for _, value := range archetypes {
-		fmt.Println(value.Type)
+		fmt.Println(value.Name)
 	}
 
 }
 
 func getHpTemplateInfo(template string) {
-        gopath := os.Getenv("GOPATH")
-        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+	gopath := os.Getenv("GOPATH")
+	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
 	//openJSONFile("test.json")
 	//fmt.Println(archetypes)
 	//temp := strings.ReplaceAll(template, "template<", "")
 	for _, value := range archetypes {
-		if value.Type == template {
-			fmt.Println("Text : ", value.Text)
-			fmt.Println("Type :", value.Type)
-			fmt.Println("param name:", value.Param.Name, " type: ", value.Param.Type, " condition:", value.Param.Condition, " file:", value.Param.File)
+		if value.Name == template {
+			fmt.Println("Name : ", value.Name)
+			fmt.Println("Url :", value.Url)
+			fmt.Println("param name:", value.Param.Name, " RepoPath: ", value.Param.RepoPath, " IncludeGrpc:", value.Param.IncludeGrpc)
 
 		}
 
@@ -74,19 +73,19 @@ func getHpTemplateInfo(template string) {
 }
 
 func getTemplateDownload(template string, destination string) {
-        gopath := os.Getenv("GOPATH")
-        abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+	gopath := os.Getenv("GOPATH")
+	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
 	//openJSONFile("test.json")
 	//fmt.Println(archetypes)
 	//emp := strings.ReplaceAll(template, "template<", "")
 	for _, value := range archetypes {
-		if value.Type == template {
-			fmt.Println("Text : ", value.Text)
-			fmt.Println("Type :", value.Type)
-			fmt.Println("param name:", value.Param.Name, "- param Type :", value.Param.Type, "- param condition :",
-				value.Param.Condition, "- param file :", value.Param.File)
-			fullUrlFile = value.Param.Name
+		if value.Name == template {
+			fmt.Println("Name : ", value.Name)
+			fmt.Println("Url :", value.Url)
+			fmt.Println("param name:", value.Param.Name, "- RepoPath :", value.Param.RepoPath, "- param condition :",
+				value.Param.IncludeGrpc)
+			fullUrlFile = value.Url
 		}
 
 	}

@@ -1,2 +1,2 @@
-[{ "id": 1,"text": "Helper file","type": "README","param":{"name":"https://github.com/rantav/go-archetype","type":"include","condition":"IncludeReadme","file":"README.md"}},
- {"id": 2,"text": "main file","type": "main" ,"param":{"name":"https://github.com/rantav/go-template","type":"include","condition":"IncludeReadme","file":"main.go"}}]
+[{"id": 1, "name": "main","url": "https://github.com/rantav/go-template" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}},
+    {"id": 2, "name": "go-template","url": "https://github.com/rantav/go-template" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}}]
