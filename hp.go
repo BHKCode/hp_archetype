@@ -3,15 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
-	"net/http"
-	"net/url"
+	"log"
 	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
-	"strings"
 )
 
 var (
@@ -57,9 +54,7 @@ func getHpTemplateInfo(template string) {
 	gopath := os.Getenv("GOPATH")
 	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
-	//openJSONFile("test.json")
-	//fmt.Println(archetypes)
-	//temp := strings.ReplaceAll(template, "template<", "")
+
 	for _, value := range archetypes {
 		if value.Name == template {
 			fmt.Println("Name : ", value.Name)
@@ -72,7 +67,7 @@ func getHpTemplateInfo(template string) {
 
 }
 
-func getTemplateDownload(template string, destination string) {
+func getTemplateDownload(template string, dpath string) {
 	gopath := os.Getenv("GOPATH")
 	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
 	openJSONFile(abspath)
@@ -86,58 +81,34 @@ func getTemplateDownload(template string, destination string) {
 			fmt.Println("param name:", value.Param.Name, "- RepoPath :", value.Param.RepoPath, "- param condition :",
 				value.Param.IncludeGrpc)
 			fullUrlFile = value.Url
+			fileName = value.Name
 		}
 
 	}
-	// Build fileName from fullPath
-	buildFileName()
-	// Create blank file
-	//replacer := strings.NewReplacer("destination<", "", ">", "")
-	//output := replacer.Replace(destination)
-	file := createFile(destination)
-	// Put content on file
-	putFile(file, httpClient())
+
+	putFile()
+	exeCommnad(dpath, fileName)
 
 }
 
-func putFile(file *os.File, client *http.Client) {
-	resp, err := client.Get(fullUrlFile)
-	checkError(err)
-	defer resp.Body.Close()
-	size, err := io.Copy(file, resp.Body)
-	defer file.Close()
-	checkError(err)
-	fmt.Println("Just Downloaded a file %s with size %d", fileName, size)
-}
+//putFile(file *os.File, client *http.Client)
+func putFile() {
 
-func buildFileName() {
-	fileUrl, err := url.Parse(fullUrlFile)
+	gitPath, err := exec.LookPath("git")
+	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
+	err = cmd.Run()
 	checkError(err)
-	path := fileUrl.Path
-	segments := strings.Split(path, "/")
-	fileName = segments[len(segments)-1]
-}
+	//os.Chdir(fileName)
+	//go-archetype transform --transformations=transformations.yml \--source=. \--destination=.tmp/go/my-go-project
+	//exeCommnad(dpath)
 
-func httpClient() *http.Client {
-	client := http.Client{
-		CheckRedirect: func(r *http.Request, via []*http.Request) error {
-			r.URL.Opaque = r.URL.Path
-			return nil
-		},
-	}
-	return &client
-}
-
-func createFile(path string) *os.File {
-	file, err := os.Create(path + string(filepath.Separator) + fileName)
-	checkError(err)
-	return file
 }
 
 func checkError(err error) {
 	if err != nil {
 		panic(err)
 		//fmt.Println("file opening error")
+		log.Fatal(err)
 	}
 }
 
@@ -152,31 +123,15 @@ func openJSONFile(filename string) {
 
 }
 
-func runTemplate(destination string) {
-	//replacer := strings.NewReplacer("destination<", "", ">", "")
+func exeCommnad(destination string, filename string) {
+	home, _ := os.Getwd()
+	goArcPath, err1 := exec.LookPath("go-archetype")
+	filepath.Join(destination, filename)
+	checkError(err1)
+	//cmd := exec.Command("C:\\Go\\bin\\go-archetype.exe", "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
+	cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+destination+string(os.PathSeparator)+filename, "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=yes")
+	cmd.Dir = filepath.Join(home, filename)
 
-	//output := replacer.Replace(destination)
-
-	s1 := strings.Split(destination, string(filepath.Separator))
-	sz := len(s1)
-
-	if sz > 0 {
-		s1 = s1[:sz-1]
-	}
-	err := os.Chdir(strings.Join(s1, string(filepath.Separator)))
-	if err != nil {
-		fmt.Println("File Path Could not be changed")
-	}
-	exeCommnad(destination)
-
-}
-
-func exeCommnad(destination string) {
-	output, err := exec.Command(destination).Output()
-	if err == nil {
-		fmt.Printf("%s", output)
-	} else {
-		fmt.Printf("%s", err)
-	}
-
+	err2 := cmd.Run()
+	checkError(err2)
 }

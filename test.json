@@ -1,2 +1,2 @@
-[{"id": 1, "name": "main","url": "https://github.com/rantav/go-template" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}},
-    {"id": 2, "name": "go-template","url": "https://github.com/rantav/go-template" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}}]
+[{"id": 1, "name": "hp_archetype","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}},
+    {"id": 2, "name": "go-template","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"name":"string","repo_path":"string", "include_grpc":"yes|no"}}]
