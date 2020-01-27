@@ -103,7 +103,7 @@ func putFile() {
 	//cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
 	cmd := exec.Command("git", "clone", fullUrlFile, fileName)
 	log.Println(cmd)
-	log.Println(gitPath)
+	//log.Println(gitPath)
 	err = cmd.Run()
 	checkError(err)
 	//os.Chdir(fileName)
