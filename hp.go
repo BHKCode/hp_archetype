@@ -104,7 +104,7 @@ func putFile() {
 	cmd := exec.Command("git", "clone", fullUrlFile, fileName)
 	log.Println(cmd)
 	//log.Println(gitPath)
-	err = cmd.Run()
+	err := cmd.Run()
 	checkError(err)
 	//os.Chdir(fileName)
 	//go-archetype transform --transformations=transformations.yml \--source=. \--destination=.tmp/go/my-go-project
