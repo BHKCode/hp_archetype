@@ -23,12 +23,8 @@ type Archetype struct {
 	Name  string `json:"name"`
 	Url   string `json:"url"`
 	Param struct {
-		Label1 string `json:"label1"`
-		Label2 string `json:"label2"`
-		Label3 string `json:"label3"`
-		Value1 string `json:"value1"`
-		Value2 string `json:"value2"`
-		Value3 string `json:"value3"`
+		Label string `json:"label"`
+		Value string `json:"value"`
 	}
 }
 
@@ -53,8 +49,7 @@ func getHpTemplateInfo(template string) {
 			//fmt.Println(value)
 			fmt.Println("Name : ", value.Name)
 			fmt.Println("Url :", value.Url)
-			fmt.Println("param Label1:", value.Param.Label1, " Label2: ", value.Param.Label2, " Label3:", value.Param.Label3)
-			fmt.Println("param Value1:", value.Param.Value1, " Value2: ", value.Param.Value2, " Value3:", value.Param.Value3)
+			fmt.Println("param Label:", value.Param.Label+":"+value.Param.Value)
 
 		}
 
@@ -62,7 +57,7 @@ func getHpTemplateInfo(template string) {
 
 }
 
-func getTemplateDownload(template string, dpath string, value1 string, value2 string, value3 string) {
+func getTemplateDownload(template string, dpath string, value1 string) {
 	//fmt.Println(archetypes)
 	gopath := os.Getenv("GOPATH")
 	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
@@ -89,7 +84,7 @@ func getTemplateDownload(template string, dpath string, value1 string, value2 st
 			filepath.Join(dpath, fileName)
 			checkError(err1)
 			//cmd := exec.Command("C:\\Go\\bin\\go-archetype.exe", "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
-			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", "--"+value.Param.Label1+"="+value1, "--"+value.Param.Label2+"="+value2, "--"+value.Param.Label3+"="+value3)
+			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", "--"+value.Param.Label+"="+value1)
 			fmt.Println(cmd)
 			cmd.Dir = filepath.Join(home, fileName)
 
@@ -145,4 +140,18 @@ func getGoArchetype() {
 	err = cmd.Run()
 	checkError(err)
 
+}
+
+func getHpTemplateParamInfo(template string) (lab3 string) {
+	gopath := os.Getenv("GOPATH")
+	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
+	openJSONFile(abspath)
+
+	for _, value := range archetypes {
+		if value.Name == template {
+			return value.Param.Label
+		}
+
+	}
+	return
 }

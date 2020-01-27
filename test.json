@@ -1,2 +1,2 @@
-[{"id": 1, "name": "hp_archetype","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"label1":"ProjectName","label2":"ProjectDescription", "label3":"IncludeReadme","value1":"string","value2":"string", "value3":"yes|no"}},
-    {"id": 2, "name": "go-template","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"label1":"name","label2":"repo_path", "label3":"include_grpc","value1":"string","value2":"string", "value3":"yes|no"}}]
+[{"id": 1, "name": "hp_arche","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"label":"IncludeReadme", "value":"yes|no"}},
+    {"id": 2, "name": "go-template","url": "https://github.com/BHKCode/hp_archetype.git" ,"param":{"label":"include_grpc","value":"yes|no"}}]
