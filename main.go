@@ -14,6 +14,9 @@ func main() {
 	checkoutCmd := flag.NewFlagSet("checkout", flag.ExitOnError)
 	checkoutTemplate := checkoutCmd.String("template", "", "template")
 	checkoutDestination := checkoutCmd.String("destination", "", "destination")
+	checkoutparam1 := checkoutCmd.String("param1", "", "param1")
+	checkoutparam2 := checkoutCmd.String("param2", "", "param2")
+	checkoutparam3 := checkoutCmd.String("param3", "", "param3")
 
 	//buildCmd := flag.NewFlagSet("build", flag.ExitOnError)
 	//buildDestination := buildCmd.String("destination", "", "destination")
@@ -33,7 +36,7 @@ func main() {
 		getHpTemplateInfo(*infoTemplate)
 	case "checkout":
 		checkoutCmd.Parse(os.Args[2:])
-		getTemplateDownload(*checkoutTemplate, *checkoutDestination)
+		getTemplateDownload(*checkoutTemplate, *checkoutDestination, *checkoutparam1, *checkoutparam2, *checkoutparam3)
 	// case "build":
 	// 	buildCmd.Parse(os.Args[2:])
 	// 	exeCommnad(*buildDestination)
