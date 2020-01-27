@@ -14,18 +14,4 @@ transformations:
     region_marker: __INCLUDE_README__
     condition: IncludeReadme
     files: ["main.go"]
-  - name: project long description
-    type: replace
-    pattern: Use go-archetype to transform project archetypes into existing live projects
-    replacement: "{{ wrap 80 .ProjectDescription }}" # Wrap input by 80 columns
-    files: ["cmd/root.go"]
-  - name: project package
-    type: replace
-    pattern: github.com/rantav/go-archetype
-    replacement: github.com/xxx/yyy # A simple replacement that does not require user input. Useful? Not really...
-    files: ["*.go", "go.mod", "**/*.go"]
-  - name: project name
-    type: replace
-    pattern: go-archetype
-    replacement: "{{ .ProjectName }}" # Reference to an input ID; go templates syntax
-    files: ["*.go", "**/*.go"]
+  
