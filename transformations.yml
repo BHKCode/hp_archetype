@@ -1,14 +1,8 @@
 ignore: [".git/", "transformations.yml", ".DS_Store"]
 inputs:
-  - id: ProjectName # Must be a unique ID. Can be used also as CLI arg
-    text: What is the project name?
-    type: text
   - id: IncludeReadme
     text: Would you like to include the readme file?
     type: yesno
-  - id: ProjectDescription
-    text: Please provide a long project description
-    type: text
 transformations:
   - name: include the readme file
     type: include
