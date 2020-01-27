@@ -99,8 +99,9 @@ func getTemplateDownload(template string, dpath string, value1 string, value2 st
 //putFile(file *os.File, client *http.Client)
 func putFile() {
 
-	gitPath, err := exec.LookPath("git")
-	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
+	//gitPath, err := exec.LookPath("git")
+	//cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
+	cmd := exec.Command("git", "clone", fullUrlFile, fileName)
 	log.Println(cmd)
 	log.Println(gitPath)
 	err = cmd.Run()
