@@ -81,11 +81,16 @@ func getTemplateDownload(template string, dpath string, value1 string, value2 st
 			putFile()
 			home, _ := os.Getwd()
 			goArcPath, err1 := exec.LookPath("go-archetype")
+			if err1 != nil {
+				getGoArchetype()
+				goArcPath, err1 = exec.LookPath("go-archetype")
+			}
+			fmt.Println(goArcPath)
 			filepath.Join(dpath, fileName)
 			checkError(err1)
 			//cmd := exec.Command("C:\\Go\\bin\\go-archetype.exe", "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
 			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", "--"+value.Param.Label1+"="+value1, "--"+value.Param.Label2+"="+value2, "--"+value.Param.Label3+"="+value3)
-			//fmt.Println(cmd)
+			fmt.Println(cmd)
 			cmd.Dir = filepath.Join(home, fileName)
 
 			err2 := cmd.Run()
@@ -128,5 +133,16 @@ func openJSONFile(filename string) {
 	defer jsonFile.Close()
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &archetypes)
+
+}
+
+func getGoArchetype() {
+	goPath, err := exec.LookPath("go")
+	cmd := exec.Command(fmt.Sprintf("%s", goPath), "get", "-u", "github.com/rantav/go-archetype")
+	//cmd := exec.Command("git", "clone", fullUrlFile, fileName)
+	log.Println(cmd)
+	//log.Println(gitPath)
+	err = cmd.Run()
+	checkError(err)
 
 }
