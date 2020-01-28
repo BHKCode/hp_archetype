@@ -51,8 +51,8 @@ func getHpTemplateInfo(template string) {
 			//fmt.Println(value)
 			fmt.Println("Name : ", value.Name)
 			fmt.Println("Url :", value.Url)
-			fmt.Println("param Label1:", value.Param.Label1+":"+value.Param.Value1)
-			fmt.Println("param Label2:", value.Param.Label2+":"+value.Param.Value2)
+			fmt.Println(value.Param.Label1 + ":" + value.Param.Value1)
+			fmt.Println(value.Param.Label2 + ":" + value.Param.Value2)
 
 		}
 
