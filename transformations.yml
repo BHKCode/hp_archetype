@@ -17,7 +17,7 @@ transformations:
     region_marker: __INCLUDE_README__
     condition: IncludeReadme
     files: ["main.go"]
-    - name: project name
+  - name: project name
     type: replace
     pattern: go-archetype
     replacement: "{{ .ProjectName }}" # Reference to an input ID; go templates syntax
