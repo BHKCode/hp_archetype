@@ -36,14 +36,14 @@ func main() {
 
 	case "checkout":
 		checkoutCmd.Parse(os.Args[2:6])
-		param := getHpTemplateParamInfo(*checkoutTemplate)
-		checkoutparam := checkoutCmd.String(param, "", param)
+		param1, param2 := getHpTemplateParamInfo(*checkoutTemplate)
+		checkoutparam1 := checkoutCmd.String(param1, "", param1)
+		checkoutparam2 := checkoutCmd.String(param2, "", param2)
 		checkoutCmd.Parse(os.Args[6:])
-		getTemplateDownload(*checkoutTemplate, *checkoutDestination, *checkoutparam)
+		getTemplateDownload(*checkoutTemplate, *checkoutDestination, *checkoutparam1, *checkoutparam2)
 
 	case "exit":
 		os.Exit(1)
-
 	default:
 		fmt.Println("expected 'list' or 'info' or 'checkout' or 'build' or 'exit' subcommands")
 		os.Exit(1)
