@@ -19,7 +19,7 @@ transformations:
     files: ["main.go"]
   - name: project name
     type: replace
-    pattern: go-archetype
+    pattern: hp-archetype
     replacement: "{{ .ProjectName }}" # Reference to an input ID; go templates syntax
     files: ["*.go", "**/*.go","README.md"]
   
