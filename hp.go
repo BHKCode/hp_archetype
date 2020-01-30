@@ -13,9 +13,10 @@ import (
 
 var (
 	fileName    string
-	fullUrlFile string
+	fullURLFile string
 	byteValue   []byte
 	archetypes  []Archetype
+	Params      []Param
 )
 
 const (
@@ -23,15 +24,15 @@ const (
 )
 
 type Archetype struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Url   string `json:"url"`
-	Param struct {
-		Label1 string `json:"label1"`
-		Value1 string `json:"value1"`
-		Label2 string `json:"label2"`
-		Value2 string `json:"value2"`
-	}
+	ID     int     `json:"id"`
+	Name   string  `json:"name"`
+	URL    string  `json:"url"`
+	Params []Param `json:"param"`
+}
+
+type Param struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
 }
 
 func ReadJSONList() {
@@ -49,23 +50,23 @@ func GetHpTemplateInfo(template string) {
 		if value.Name == template {
 			//fmt.Println(value)
 			fmt.Println("Name : ", value.Name)
-			fmt.Println("Url :", value.Url)
+			fmt.Println("Url :", value.URL)
 			fmt.Println("Params :")
-			fmt.Println(value.Param.Label1 + ":" + value.Param.Value1)
-			fmt.Println(value.Param.Label2 + ":" + value.Param.Value2)
-
+			for _, pValue := range value.Params {
+				fmt.Println(pValue.Label + ":" + pValue.Value)
+			}
 		}
 
 	}
 
 }
 
-func GetTemplateDownload(template string, dpath string, value1 string, value2 string) {
+func GetTemplateDownload(template string, dpath string, param map[string]string) {
 	OpenJSONFile()
 	for _, value := range archetypes {
 		if value.Name == template {
 
-			fullUrlFile = value.Url
+			fullURLFile = value.URL
 			fileName = value.Name
 			PutFile()
 			home, _ := os.Getwd()
@@ -77,8 +78,20 @@ func GetTemplateDownload(template string, dpath string, value1 string, value2 st
 			filepath.Join(filepath.FromSlash(dpath), fileName)
 
 			CheckError(err1)
-			//cmd := exec.Command("C:\\Go\\bin\\go-archetype.exe", "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
-			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", "--"+value.Param.Label1+"="+value1, "--"+value.Param.Label2+"="+value2)
+			args := make([]string, 10)
+			i := 1
+			args[0] = "transform"
+			args[1] = "--transformations=transformations.yml"
+			args[2] = "--source=."
+			args[3] = "--destination=" + dpath + string(os.PathSeparator) + fileName
+			args[4] = "--"
+			for key, value := range param {
+				args[4+i] = key + "=" + value
+				i = i + 1
+			}
+			//cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
+			//cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", paramStr)
+			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), args...)
 			fmt.Println(cmd)
 			cmd.Dir = filepath.Join(home, fileName)
 
@@ -89,11 +102,9 @@ func GetTemplateDownload(template string, dpath string, value1 string, value2 st
 	}
 
 }
-
-//putFile(file *os.File, client *http.Client)
 func PutFile() {
 	gitPath, err := exec.LookPath("git")
-	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
+	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullURLFile, fileName)
 	log.Println(cmd)
 
 	err = cmd.Run()
@@ -103,8 +114,6 @@ func PutFile() {
 
 func CheckError(err error) {
 	if err != nil {
-		panic(err)
-		//fmt.Println("file opening error")
 		log.Fatal(err)
 	}
 }
@@ -132,13 +141,16 @@ func GetGoArchetype() {
 
 }
 
-func GetHpTemplateParamInfo(template string) (lab1 string, lab2 string) {
+func GetHpTemplateParamInfo(template string) []string {
 	OpenJSONFile()
+	lables := make([]string, 10)
 	for _, value := range archetypes {
 		if value.Name == template {
-			return value.Param.Label1, value.Param.Label2
+			for i, values := range value.Params {
+				lables[i] = values.Label
+			}
+			return lables
 		}
-
 	}
-	return
+	return nil
 }
