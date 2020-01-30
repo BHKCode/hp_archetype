@@ -18,6 +18,10 @@ var (
 	archetypes  []Archetype
 )
 
+const (
+	jsonFileName = "test.json"
+)
+
 type Archetype struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
@@ -30,10 +34,8 @@ type Archetype struct {
 	}
 }
 
-func readJSONList() {
-	gopath := os.Getenv("GOPATH")
-	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
-	openJSONFile(abspath)
+func ReadJSONList() {
+	OpenJSONFile()
 	//openJSONFile("test.json")
 	for _, value := range archetypes {
 		fmt.Println(value.Name)
@@ -41,11 +43,8 @@ func readJSONList() {
 
 }
 
-func getHpTemplateInfo(template string) {
-	gopath := os.Getenv("GOPATH")
-	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
-	openJSONFile(abspath)
-
+func GetHpTemplateInfo(template string) {
+	OpenJSONFile()
 	for _, value := range archetypes {
 		if value.Name == template {
 			//fmt.Println(value)
@@ -61,32 +60,30 @@ func getHpTemplateInfo(template string) {
 
 }
 
-func getTemplateDownload(template string, dpath string, value1 string, value2 string) {
-	fmt.Println("tep", dpath)
-	gopath := os.Getenv("GOPATH")
-	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
-	openJSONFile(abspath)
+func GetTemplateDownload(template string, dpath string, value1 string, value2 string) {
+	OpenJSONFile()
 	for _, value := range archetypes {
 		if value.Name == template {
 
 			fullUrlFile = value.Url
 			fileName = value.Name
-			putFile()
+			PutFile()
 			home, _ := os.Getwd()
 			goArcPath, err1 := exec.LookPath("go-archetype")
 			if err1 != nil {
-				getGoArchetype()
+				GetGoArchetype()
 				goArcPath, err1 = exec.LookPath("go-archetype")
 			}
-			filepath.Join(dpath, fileName)
-			checkError(err1)
+			filepath.Join(filepath.FromSlash(dpath), fileName)
+
+			CheckError(err1)
 			//cmd := exec.Command("C:\\Go\\bin\\go-archetype.exe", "transform", "--transformations=transformations.yml", "--source=.", "--destination=C:\\Users\\KohaleBh\\Pictures\\gotest", "--", "--ProjectName=abc", "--ProjectDescription=description", "--IncludeReadme=no")
 			cmd := exec.Command(fmt.Sprintf("%s", goArcPath), "transform", "--transformations=transformations.yml", "--source=.", "--destination="+dpath+string(os.PathSeparator)+fileName, "--", "--"+value.Param.Label1+"="+value1, "--"+value.Param.Label2+"="+value2)
 			fmt.Println(cmd)
 			cmd.Dir = filepath.Join(home, fileName)
 
 			err2 := cmd.Run()
-			checkError(err2)
+			CheckError(err2)
 		}
 
 	}
@@ -94,18 +91,17 @@ func getTemplateDownload(template string, dpath string, value1 string, value2 st
 }
 
 //putFile(file *os.File, client *http.Client)
-func putFile() {
-
+func PutFile() {
 	gitPath, err := exec.LookPath("git")
 	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullUrlFile, fileName)
 	log.Println(cmd)
 
 	err = cmd.Run()
-	checkError(err)
+	CheckError(err)
 
 }
 
-func checkError(err error) {
+func CheckError(err error) {
 	if err != nil {
 		panic(err)
 		//fmt.Println("file opening error")
@@ -113,8 +109,10 @@ func checkError(err error) {
 	}
 }
 
-func openJSONFile(filename string) {
-	jsonFile, err := os.Open(filename)
+func OpenJSONFile() {
+	gopath := os.Getenv("GOPATH")
+	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+jsonFileName)
+	jsonFile, err := os.Open(abspath)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -124,21 +122,18 @@ func openJSONFile(filename string) {
 
 }
 
-func getGoArchetype() {
+func GetGoArchetype() {
 	goPath, err := exec.LookPath("go")
 	cmd := exec.Command(fmt.Sprintf("%s", goPath), "get", "-u", "github.com/rantav/go-archetype")
 	log.Println(cmd)
 	//log.Println(gitPath)
 	err = cmd.Run()
-	checkError(err)
+	CheckError(err)
 
 }
 
-func getHpTemplateParamInfo(template string) (lab1 string, lab2 string) {
-	gopath := os.Getenv("GOPATH")
-	abspath := path.Join(gopath, string(os.PathSeparator)+"src"+string(os.PathSeparator)+"github.com"+string(os.PathSeparator)+"BHKCode"+string(os.PathSeparator)+"hp_archetype"+string(os.PathSeparator)+"test.json")
-	openJSONFile(abspath)
-
+func GetHpTemplateParamInfo(template string) (lab1 string, lab2 string) {
+	OpenJSONFile()
 	for _, value := range archetypes {
 		if value.Name == template {
 			return value.Param.Label1, value.Param.Label2

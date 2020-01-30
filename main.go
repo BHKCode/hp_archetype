@@ -28,19 +28,19 @@ func main() {
 	switch os.Args[1] {
 
 	case "list":
-		readJSONList()
+		ReadJSONList()
 
 	case "info":
 		infoCmd.Parse(os.Args[2:])
-		getHpTemplateInfo(*infoTemplate)
+		GetHpTemplateInfo(*infoTemplate)
 
 	case "checkout":
 		checkoutCmd.Parse(os.Args[2:6])
-		param1, param2 := getHpTemplateParamInfo(*checkoutTemplate)
+		param1, param2 := GetHpTemplateParamInfo(*checkoutTemplate)
 		checkoutparam1 := checkoutCmd.String(param1, "", param1)
 		checkoutparam2 := checkoutCmd.String(param2, "", param2)
 		checkoutCmd.Parse(os.Args[6:])
-		getTemplateDownload(*checkoutTemplate, *checkoutDestination, *checkoutparam1, *checkoutparam2)
+		GetTemplateDownload(*checkoutTemplate, *checkoutDestination, *checkoutparam1, *checkoutparam2)
 
 	case "exit":
 		os.Exit(1)
