@@ -97,6 +97,10 @@ func GetTemplateDownload(template string, dpath string, param map[string]string)
 
 			err2 := cmd.Run()
 			CheckError(err2)
+			err2 = os.RemoveAll(filepath.Join(home, fileName))
+			if err2 != nil {
+				log.Fatal(err2)
+			}
 		}
 
 	}
