@@ -65,19 +65,17 @@ func GetTemplateDownload(template string, dpath string, param map[string]string)
 	OpenJSONFile()
 	for _, value := range archetypes {
 		if value.Name == template {
-
 			fullURLFile = value.URL
 			fileName = value.Name
-			PutFile()
+			getCloneFile()
 			home, _ := os.Getwd()
 			goArcPath, err1 := exec.LookPath("go-archetype")
 			if err1 != nil {
 				GetGoArchetype()
 				goArcPath, err1 = exec.LookPath("go-archetype")
 			}
-			filepath.Join(filepath.FromSlash(dpath), fileName)
-
 			CheckError(err1)
+			filepath.Join(filepath.FromSlash(dpath), fileName)
 			args := make([]string, 10)
 			i := 1
 			args[0] = "transform"
@@ -106,14 +104,18 @@ func GetTemplateDownload(template string, dpath string, param map[string]string)
 	}
 
 }
-func PutFile() {
+func getCloneFile() {
 	gitPath, err := exec.LookPath("git")
 	cmd := exec.Command(fmt.Sprintf("%s", gitPath), "clone", fullURLFile, fileName)
 	log.Println(cmd)
-
 	err = cmd.Run()
 	CheckError(err)
 
+}
+
+func getCopyFolder() {
+	//err := Copy(fullURLFile, fileName)
+	//CheckError(err)
 }
 
 func CheckError(err error) {

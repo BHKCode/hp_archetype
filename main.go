@@ -46,7 +46,7 @@ func main() {
 	case "exit":
 		os.Exit(1)
 	default:
-		fmt.Println("expected 'list' or 'info' or 'checkout' or 'build' or 'exit' subcommands")
+		fmt.Println("expected 'list' or 'info' or 'checkout' or 'exit' subcommands")
 		os.Exit(1)
 	}
 
