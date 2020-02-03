@@ -12,4 +12,4 @@
 ### Display info of template = hp_archetype info --template template_name
 ### Checkout template = hp_archetype checkout --template template_name --destination destination_path --param1 value1 --param2 value2 
 
-# test.json is used to maintain templates or folder details with parameter 
+## test.json is used to maintain templates or folder details with parameter 
