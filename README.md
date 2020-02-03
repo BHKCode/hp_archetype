@@ -1,7 +1,7 @@
 # hp_archetype
 
-## hp-archetype is a tool to generate boiler plate code.
-## This tool is build for alternative to maven .
+### hp-archetype is a tool to generate boiler plate code.
+### This tool is build for alternative to maven .
 
 ##  Steps to use hp_archetype
 
