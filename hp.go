@@ -20,7 +20,7 @@ var (
 )
 
 const (
-	jsonFileName = "test.json"
+	jsonFileName = "template.json"
 )
 
 type Archetype struct {
